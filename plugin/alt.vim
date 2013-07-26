@@ -20,19 +20,18 @@ endif
 
 let s:alt_patterns = {}
 function! s:Open(file)
-  let patterns = get(s:alt_patterns, getcwd())
-  if !patterns
+  if index(keys(s:alt_patterns), getcwd()) < 0
     let fn = getcwd() . "/.altrc"
     if filereadable(fn)
       let data = join(readfile(fn), "")
-      let patterns = eval(data)
-      let s:alt_patterns[getcwd()] = patterns
+      let s:alt_patterns[getcwd()] = eval(data)
     else
       echo "no alternate patterns found"
       return
     endif
   endif
 
+  let patterns = get(s:alt_patterns, getcwd())
   for pattern in patterns
     if @% =~ pattern[0]
       let result = substitute(@%, pattern[0], pattern[1], "")
