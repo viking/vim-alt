@@ -33,7 +33,7 @@ Using this example, the `src/js/models/foo.js` file would match
 with `test/js/models/test_foo.js` and vice versa. You can use any
 pattern you want.
 
-When you want to open the alternate file, run one of the follow
+When you want to open the alternate file, run one of the following
 commands:
 
 * `:A` - open the alternate file using the `:ex` command
