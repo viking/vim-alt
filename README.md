@@ -9,7 +9,7 @@ Installation
 
 If you're using pathogen:
 
-    git clone https://github.com/viking/vim-alt ~/.vim/bundle/vim-alt
+    git clone https://github.com/viking/vim-alt.git ~/.vim/bundle/vim-alt
 
 Or place the `alt.vim` file into your `~/.vim/plugin` directory.
 
