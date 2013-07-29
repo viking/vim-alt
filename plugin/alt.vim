@@ -14,12 +14,24 @@ if exists("g:loaded_alt")
 endif
 let g:loaded_alt = 1
 
+if !exists(":A")
+  command A :call s:Open(@%, 'ex')
+endif
+
+if !exists(":AS")
+  command AS :call s:Open(@%, 'sp')
+endif
+
+if !exists(":AV")
+  command AV :call s:Open(@%, 'vs')
+endif
+
 if !exists(":AT")
-  command AT :call s:Open(@%)
+  command AT :call s:Open(@%, 'tabe')
 endif
 
 let s:alt_patterns = {}
-function! s:Open(file)
+function! s:Open(file, cmd)
   if index(keys(s:alt_patterns), getcwd()) < 0
     let fn = getcwd() . "/.altrc"
     if filereadable(fn)
@@ -39,7 +51,7 @@ function! s:Open(file)
   endfor
 
   if exists("result")
-    execute "tabe" result
+    execute a:cmd result
   else
     echo "file didn't match any alternate patterns"
   endif
