@@ -15,27 +15,34 @@ endif
 let g:loaded_alt = 1
 
 if !exists(":A")
-  command A :call s:Open(@%, 'ex')
+  command A :call s:Open(expand("%:p"), 'ex')
 endif
 
 if !exists(":AS")
-  command AS :call s:Open(@%, 'sp')
+  command AS :call s:Open(expand("%:p"), 'sp')
 endif
 
 if !exists(":AV")
-  command AV :call s:Open(@%, 'vs')
+  command AV :call s:Open(expand("%:p"), 'vs')
 endif
 
 if !exists(":AT")
-  command AT :call s:Open(@%, 'tabe')
+  command AT :call s:Open(expand("%:p"), 'tabe')
 endif
 
 let s:alt_patterns = {}
 function! s:Open(file, cmd)
+  if a:file !~ '^'.getcwd()
+    echo "file is not in the current directory tree"
+    return
+  endif
+  let fn = substitute(a:file, '^'.getcwd().'/\?', '', '')
+  echo fn
+
   if index(keys(s:alt_patterns), getcwd()) < 0
-    let fn = getcwd() . "/.altrc"
-    if filereadable(fn)
-      let data = join(readfile(fn), "")
+    let altrc = getcwd() . "/.altrc"
+    if filereadable(altrc)
+      let data = join(readfile(altrc), "")
       let s:alt_patterns[getcwd()] = eval(data)
     else
       echo "no alternate patterns found"
@@ -45,8 +52,8 @@ function! s:Open(file, cmd)
 
   let patterns = get(s:alt_patterns, getcwd())
   for pattern in patterns
-    if @% =~ pattern[0]
-      let result = substitute(@%, pattern[0], pattern[1], "")
+    if fn =~ pattern[0]
+      let result = substitute(fn, pattern[0], pattern[1], "")
     endif
   endfor
 
